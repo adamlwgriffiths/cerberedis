@@ -35,9 +35,6 @@ A basic example:
     }
     data = {'name': 'Bob', 'email': 'bob@example.com'}
 
-    # Use cerberus to validate and normalise the data
-    validator = Validator(schema)
-
     # connect to our redis server
     r = Redis()
     db = CerbeRedis(r)
