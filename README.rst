@@ -1,7 +1,7 @@
 CerbeRedis
 ==========
 
-.. image:: https://raw.githubusercontent.com/greyli/flask-share/master/images/cerberedis.png
+.. image:: https://raw.githubusercontent.com/adamlwgriffiths/cerberedis/master/images/cerberedis.png
 
 De/serialise `Cerberus <https://github.com/pyeve/cerberus>`_ data to a `Redis <http://redis.io/>`_ database.
 
