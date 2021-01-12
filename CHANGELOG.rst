@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.3
+-----
+
+* Fix handling of None values for non-required fields
+
 1.0.2
 -----
 

@@ -34,10 +34,14 @@ class CerbeRedis(object):
         return rules
 
     def lower_field(self, schema, value):
+        if value is None:
+            return value
         to_redis, _ = self._rules(schema)
         return to_redis(value)
 
     def raise_field(self, schema, value):
+        if value is None:
+            return value
         _, from_redis = self._rules(schema)
         return from_redis(value)
 
@@ -90,7 +94,7 @@ class CerbeRedis(object):
         final_data = {}
         for field_name, field_schema in schema.items():
             field_type = field_schema['type']
-            field_data = data.get(field_name, {})
+            field_data = data.get(field_name, None)
 
             # ignore empty fields
             if field_data is None:

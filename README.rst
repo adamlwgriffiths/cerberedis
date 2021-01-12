@@ -1,7 +1,7 @@
 CerbeRedis
 ==========
 
-.. image:: images/cerberedis.png
+.. image:: https://raw.githubusercontent.com/greyli/flask-share/master/images/cerberedis.png
 
 De/serialise `Cerberus <https://github.com/pyeve/cerberus>`_ data to a `Redis <http://redis.io/>`_ database.
 
@@ -45,7 +45,7 @@ A basic example:
     db.save(model_name, schema, id, document)
 
     # print the key the model is stored under
-    
+
     print(db.key(model_name, id))
 
     # reload the document

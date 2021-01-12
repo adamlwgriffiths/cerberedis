@@ -129,25 +129,25 @@ class TestRedisDB(unittest.TestCase):
         # this schema covers all the basic types, and the custom types we've defined
         schema = {
             # basic types
-            'boolean': {'type': 'boolean', 'required': True},
-            'binary': {'type': 'binary', 'required': True},
-            'date': {'type': 'date', 'required': True},
-            'datetime': {'type': 'datetime', 'required': True},
-            'float': {'type': 'float', 'required': True},
-            'integer': {'type': 'integer', 'required': True},
-            'number': {'type': 'number', 'required': True},
-            'string': {'type': 'string', 'required': True},
+            'boolean': {'type': 'boolean'},
+            'binary': {'type': 'binary'},
+            'date': {'type': 'date'},
+            'datetime': {'type': 'datetime'},
+            'float': {'type': 'float'},
+            'integer': {'type': 'integer'},
+            'number': {'type': 'number'},
+            'string': {'type': 'string'},
             # containers
             'dict': {'type': 'dict', 'schema': {
-                'field_a': {'type': 'string', 'required': True},
-                'field_b': {'type': 'integer', 'required': True},
+                'field_a': {'type': 'string'},
+                'field_b': {'type': 'integer'},
             }},
             'list': {'type': 'list', 'schema': {'type': 'integer'}},
             'set': {'type': 'set', 'schema': {'type': 'string'}},
             # custom types
-            'ipaddress': {'type': 'ipaddress', 'required': True},
-            'ipv4address': {'type': 'ipv4address', 'required': True},
-            'ipv6address': {'type': 'ipv6address', 'required': True},
+            'ipaddress': {'type': 'ipaddress'},
+            'ipv4address': {'type': 'ipv4address'},
+            'ipv6address': {'type': 'ipv6address'},
         }
         date_today = date.today()
         datetime_now = datetime.now()
@@ -213,6 +213,14 @@ class TestRedisDB(unittest.TestCase):
         self.assertEqual(self.redis.lrange('Test::1::list', 0, -1), [b'1',b'2',b'3',b'4',b'5'])
         # set
         self.assertEqual(self.redis.smembers('Test::1::set'), {b'a',b'b',b'c'})
+
+
+        # serialise with no values
+        # there are no required values so this should also work
+        document = validator.normalized({})
+        self.assertIsNotNone(document)
+
+        db.save(name, validator.schema, id, document)
 
 
 if __name__ == '__main__':
