@@ -23,6 +23,9 @@ class CerbeRedis(object):
         rules = rules or {}
         self.rules.update({**rules})
 
+    def key(self, type_name, id):
+        return f'{type_name}::{id}'
+
     def _rules(self, schema):
         schema_type = schema.get('type')
         rules = self.rules.get(schema_type)
@@ -56,7 +59,7 @@ class CerbeRedis(object):
     def _save(self, db, type_name, schema, id, data):
         '''Save function which supports recursion through it's signature
         '''
-        key = f'{type_name}::{id}'
+        key = self.key(type_name, id)
 
         # if field is dict, list, set
         # recurse and call with name::id::field
@@ -128,7 +131,7 @@ class CerbeRedis(object):
         return db.smembers(key)
 
     def _load(self, db, type_name, schema, id):
-        key = f'{type_name}::{id}'
+        key = self.key(type_name, id)
 
         def container_schema(field_name, field_schema):
             item_schema = field_schema.get('schema')

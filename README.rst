@@ -44,6 +44,10 @@ A basic example:
     model_name, id = 'User', 1
     db.save(model_name, schema, id, document)
 
+    # print the key the model is stored under
+    
+    print(db.key(model_name, id))
+
     # reload the document
     loaded_document = db.load(model_name, schema, id)
 

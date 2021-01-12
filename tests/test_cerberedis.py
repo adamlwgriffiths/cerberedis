@@ -3,8 +3,8 @@ from ipaddress import ip_address, IPv4Address, IPv6Address
 from datetime import date, datetime
 from cerberus import Validator, TypeDefinition
 # use either a real redis server, or the mock one
-from redis import Redis
-#from redis_mock import Redis
+#from redis import Redis
+from redis_mock import Redis
 from cerberedis import CerbeRedis
 
 def str_to_bytes(s):
@@ -183,6 +183,9 @@ class TestRedisDB(unittest.TestCase):
         # save the database
         db = CerbeRedis(self.redis)
         db.save(name, validator.schema, id, document)
+
+        key = db.key(name, id)
+        self.assertEqual(key, f'{name}::{id}')
 
         # reload the document
         loaded_document = db.load(name, validator.schema, id)
