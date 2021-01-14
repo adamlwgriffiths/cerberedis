@@ -13,11 +13,6 @@ Installation
     $ pip install cerberedis
 
 
-Limitations
------------
-
-* Containers cannot be nested. Ie. lists and sets cannot contain lists, sets, or dicts.
-
 Example
 -------
 
@@ -134,6 +129,30 @@ A full featured example, including custom types:
 
     # verify the data is laid out how we expect
     assert document == loaded_document
+
+
+Supported Types
+---------------
+
+All existing `Cerberus Types <https://docs.python-cerberus.org/en/stable/validation-rules.html#type>`_:
+
+* boolean
+* binary
+* date
+* datetime
+* float
+* integer
+* number
+* string
+* dict
+* list
+* set
+
+
+Limitations
+-----------
+
+* Containers cannot be nested. Ie. lists and sets cannot contain lists, sets, or dicts.
 
 Future Work
 -----------

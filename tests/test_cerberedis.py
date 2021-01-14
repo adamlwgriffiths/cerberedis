@@ -222,6 +222,35 @@ class TestRedisDB(unittest.TestCase):
 
         db.save(name, validator.schema, id, document)
 
+    def test_not_found(self):
+        schema = {
+            # basic types
+            'boolean': {'type': 'boolean'},
+            'binary': {'type': 'binary'},
+            'date': {'type': 'date'},
+            'datetime': {'type': 'datetime'},
+            'float': {'type': 'float'},
+            'integer': {'type': 'integer'},
+            'number': {'type': 'number'},
+            'string': {'type': 'string'},
+            # containers
+            'dict': {'type': 'dict', 'schema': {
+                'field_a': {'type': 'string'},
+                'field_b': {'type': 'integer'},
+            }},
+            'list': {'type': 'list', 'schema': {'type': 'integer'}},
+            'set': {'type': 'set', 'schema': {'type': 'string'}},
+            # custom types
+            'ipaddress': {'type': 'ipaddress'},
+            'ipv4address': {'type': 'ipv4address'},
+            'ipv6address': {'type': 'ipv6address'},
+        }
+        db = CerbeRedis(self.redis)
+        validator = Validator(schema)
+        name, id = 'Test', 1
+        document = db.load(name, validator.schema, id)
+        self.assertIsNone(document)
+
 
 if __name__ == '__main__':
     unittest.main()

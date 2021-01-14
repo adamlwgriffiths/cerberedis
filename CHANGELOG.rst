@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.5
+-----
+
+* Return None rather than empty containers. Permits us to know if the value actually exists.
+
 1.0.4
 -----
 

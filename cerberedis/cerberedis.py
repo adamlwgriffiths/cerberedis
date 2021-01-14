@@ -125,14 +125,19 @@ class CerbeRedis(object):
             p.reset()
             raise
 
-    def _load_hash(self, db, key, field):
+    def _key_exists(self, db, key):
+        return db.exists(key)
+
+    def _load_field(self, db, key, field):
         return db.hget(key, field)
 
     def _load_list(self, db, key):
-        return db.lrange(key, 0, -1)
+        if self._key_exists(db, key):
+            return db.lrange(key, 0, -1)
 
     def _load_set(self, db, key):
-        return db.smembers(key)
+        if self._key_exists(db, key):
+            return db.smembers(key)
 
     def _load(self, db, type_name, schema, id):
         key = self.key(type_name, id)
@@ -161,6 +166,10 @@ class CerbeRedis(object):
 
         containers = {'dict': load_dict, 'list': load_list, 'set': load_set}
 
+        # don't return empty dicts, return None instead
+        if not self._key_exists(db, key):
+            return None
+
         data = {}
         # load the current hash
         for field_name, field_schema in schema.items():
@@ -169,10 +178,11 @@ class CerbeRedis(object):
             # containers are handled differently
             if field_type in containers:
                 value = containers[field_type](field_name, field_schema)
-                data[field_name] = value
+                if value:
+                    data[field_name] = value
                 continue
 
-            field_data = self._load_hash(db, key, field_name)
+            field_data = self._load_field(db, key, field_name)
 
             # ignore empty fields
             if field_data is None:
